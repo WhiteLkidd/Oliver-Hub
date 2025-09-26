@@ -1,0 +1,186 @@
+-- Modern Blue GUI Framework by WhiteLkidd
+-- LocalScript v StarterPlayerScripts
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Main ScreenGui
+local gui = Instance.new("ScreenGui")
+gui.Name = "Oliver_CoolGUI"
+gui.ResetOnSpawn = false
+gui.Parent = playerGui
+
+-- Main Frame
+local main = Instance.new("Frame")
+main.Size = UDim2.new(0, 600, 0, 450)
+main.Position = UDim2.new(0.5, -300, 0.2, 0)
+main.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+main.AnchorPoint = Vector2.new(0.5, 0)
+main.Visible = true
+main.Active = true
+main.Draggable = true
+main.Parent = gui
+
+local corner = Instance.new("UICorner", main)
+corner.CornerRadius = UDim.new(0.035, 0)
+
+local gradient = Instance.new("UIGradient", main)
+gradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 140, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 70, 190))
+}
+gradient.Rotation = 45
+
+-- Title
+local title = Instance.new("TextLabel", main)
+title.Size = UDim2.new(1, -20, 0, 50)
+title.Position = UDim2.new(0, 10, 0, 10)
+title.BackgroundTransparency = 1
+title.Text = "Oliver — Scripts Hub"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 28
+title.TextColor3 = Color3.fromRGB(255,255,255)
+title.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Credit text
+local credit = Instance.new("TextLabel", main)
+credit.Size = UDim2.new(0, 200, 0, 20)
+credit.Position = UDim2.new(0, 10, 1, -25)
+credit.BackgroundTransparency = 1
+credit.Text = "Made by WhiteLkidd"
+credit.Font = Enum.Font.Gotham
+credit.TextSize = 16
+credit.TextColor3 = Color3.fromRGB(240,240,240)
+credit.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Version text
+local version = Instance.new("TextLabel", main)
+version.Size = UDim2.new(0, 100, 0, 20)
+version.Position = UDim2.new(1, -110, 1, -25)
+version.BackgroundTransparency = 1
+version.Text = "v1.0"
+version.Font = Enum.Font.GothamBold
+version.TextSize = 16
+version.TextColor3 = Color3.fromRGB(240,240,240)
+version.TextXAlignment = Enum.TextXAlignment.Right
+
+-- Buttons container
+local scroll = Instance.new("Frame", main)
+scroll.Position = UDim2.new(0, 10, 0, 70)
+scroll.Size = UDim2.new(1, -20, 1, -110)
+scroll.BackgroundTransparency = 1
+
+local listLayout = Instance.new("UIListLayout", scroll)
+listLayout.SortOrder = Enum.SortOrder.LayoutOrder
+listLayout.Padding = UDim.new(0, 8)
+
+-- Function to create a button
+local function createButton(name, callback)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, 0, 0, 45)
+    btn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+    btn.Text = name
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 18
+    btn.TextColor3 = Color3.fromRGB(255,255,255)
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0.25,0)
+    btn.Parent = scroll
+
+    btn.MouseButton1Click:Connect(callback)
+    return btn
+end
+
+-- Buttons
+createButton("Fly", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
+end)
+
+createButton("Wallhack", function()
+    spawn(function()
+        local Plr = player
+        local Clipon = false
+
+        local NoclipGui = Instance.new("ScreenGui")
+        NoclipGui.Name = "NoclipGui"
+        NoclipGui.Parent = playerGui
+
+        local BG = Instance.new("Frame")
+        BG.Size = UDim2.new(0, 210, 0, 127)
+        BG.Position = UDim2.new(0.15,0,0.8,0)
+        BG.BackgroundColor3 = Color3.fromRGB(25,25,25)
+        BG.BorderSizePixel = 2
+        BG.Active = true
+        BG.Draggable = true
+        BG.Parent = NoclipGui
+
+        local Toggle = Instance.new("TextButton")
+        Toggle.Size = UDim2.new(0,146,0,36)
+        Toggle.Position = UDim2.new(0.15,0,0.37,0)
+        Toggle.BackgroundColor3 = Color3.fromRGB(68,1,160)
+        Toggle.Text = "Toggle"
+        Toggle.Font = Enum.Font.GothamBold
+        Toggle.TextSize = 22
+        Toggle.TextColor3 = Color3.fromRGB(255,255,255)
+        Toggle.Parent = BG
+
+        Toggle.MouseButton1Click:Connect(function()
+            Clipon = not Clipon
+            for _, part in pairs(Plr.Character:GetChildren()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = not Clipon
+                end
+            end
+        end)
+    end)
+end)
+
+createButton("Infinite jump", function()
+    local InfiniteJumpEnabled = true
+    game:GetService("UserInputService").JumpRequest:Connect(function()
+        if InfiniteJumpEnabled and player.Character then
+            local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid:ChangeState("Jumping")
+            end
+        end
+    end)
+end)
+
+game:GetService("StarterGui"):SetCore("SendNotification", { 
+	Title = "Oliver Hub";
+	Text = "by WhiteLkidd";
+	Icon = "rbxthumb://type=Asset&id=5107182114&w=150&h=150"})
+Duration = 5;
+
+-- Close/Open buttons
+local btnClose = Instance.new("TextButton", main)
+btnClose.Size = UDim2.new(0, 100, 0, 36)
+btnClose.Position = UDim2.new(1, -110, 0, 10)
+btnClose.Text = "Close"
+btnClose.Font = Enum.Font.GothamBold
+btnClose.TextSize = 16
+btnClose.TextColor3 = Color3.fromRGB(255,255,255)
+btnClose.BackgroundColor3 = Color3.fromRGB(180,40,40)
+Instance.new("UICorner", btnClose).CornerRadius = UDim.new(0.25,0)
+
+local openBtn = Instance.new("TextButton", gui)
+openBtn.Size = UDim2.new(0,60,0,60)
+openBtn.Position = UDim2.new(0,10,0.5,-30)
+openBtn.Text = "Open"
+openBtn.Font = Enum.Font.GothamBold
+openBtn.TextSize = 16
+openBtn.TextColor3 = Color3.fromRGB(255,255,255)
+openBtn.BackgroundColor3 = Color3.fromRGB(0,120,255)
+Instance.new("UICorner", openBtn).CornerRadius = UDim.new(1,0)
+openBtn.Visible = false
+
+btnClose.MouseButton1Click:Connect(function()
+    main.Visible = false
+    openBtn.Visible = true
+end)
+
+openBtn.MouseButton1Click:Connect(function()
+    main.Visible = true
+    openBtn.Visible = false
+end)
